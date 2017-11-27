@@ -37,6 +37,7 @@ package com.regangunhouse.garden;
 
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -84,7 +85,7 @@ public class MainFragment extends Fragment {
             "Shine Bright", "Pizza sauce", "Seedless is convenient"};
 
     List<Integer> plantsList = new ArrayList<Integer>(Arrays.asList(plants));
-    List<String> plantsTextList = new ArrayList<String>(Arrays.asList(plantsText));
+    final List<String> plantsTextList = new ArrayList<String>(Arrays.asList(plantsText));
     List<String> plantsDescTextList = new ArrayList<String>(Arrays.asList(plantsDescText));
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,11 +110,9 @@ public class MainFragment extends Fragment {
                 this.mContext = mContext;
             }
 
-
-
             @Override
             public int getCount() {
-                return plants.length;
+                return plantsList.size();
             }
 
             @Override
@@ -144,8 +143,15 @@ public class MainFragment extends Fragment {
                 return imageView;
             }
         }
+
+        final ArrayAdapter<String> gridViewArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, plantsTextList);
+        final ArrayAdapter<Integer> imagesArray = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_list_item_1, plantsList);
+        //final ArrayAdapter<android.media.Image> imageViewArrayAdapter = new ArrayAdapter<android.media.Image>(getActivity(), android.R.layout.simple_list_item_1, plantsList);
+
         final ImageAdapter imageAdapter = new ImageAdapter(getActivity());
         gv.setAdapter(imageAdapter);
+        gv.setAdapter(gridViewArrayAdapter);
+        gv.setAdapter(imagesArray);
         btn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -153,12 +159,16 @@ public class MainFragment extends Fragment {
                 plantsTextList.add(plantsTextList.size(), edit.getText().toString());
                 plantsDescTextList.add(plantsDescTextList.size(), "Default Description");
 
-
-
+                imagesArray.notifyDataSetChanged();
+                gridViewArrayAdapter.notifyDataSetChanged();
+                imageAdapter.notifyDataSetChanged();
 
                 //This is where I am struggling, it updates the 3 list but doesnt refresh the gridview
                 final ImageAdapter imageAdapter2 = new ImageAdapter(getActivity());
                 gv.setAdapter(imageAdapter2);
+                imagesArray.notifyDataSetChanged();
+                //imageAdapter2.notifyDataSetChanged();
+
                 gv.invalidateViews();
                 Toast.makeText(getActivity(), plantsDescTextList.get(plantsDescTextList.size()-1), Toast.LENGTH_LONG).show();
             }
