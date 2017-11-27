@@ -72,15 +72,15 @@ public class MainFragment extends Fragment {
     }
     GridView gv;
 
-    Integer[] plants = {R.drawable.bluebonnet, R.drawable.corn, R.drawable.lettuce,
+    Integer[] plants = {R.drawable.tulips, R.drawable.corn, R.drawable.lettuce,
             R.drawable.orchid, R.drawable.potatoes, R.drawable.rose,
             R.drawable.sunflower, R.drawable.tomato, R.drawable.watermelon};
 
-    String[] plantsText = {"Bluebonnets", "Corn", "Lettuce",
+    String[] plantsText = {"Tulips", "Corn", "Lettuce",
             "Orchids", "Potatoes", "Roses",
             "Sunflowers", "Tomatoes", "Watermelon"};
 
-    String[] plantsDescText = {"Texas State Flower", "Also known as Maize", "Something about lettuce",
+    String[] plantsDescText = {"Pretty Flower", "Also known as Maize", "Something about lettuce",
             "Great Gift", "Last through a famine", "Valentines",
             "Shine Bright", "Pizza sauce", "Seedless is convenient"};
 
@@ -149,13 +149,20 @@ public class MainFragment extends Fragment {
         //final ArrayAdapter<android.media.Image> imageViewArrayAdapter = new ArrayAdapter<android.media.Image>(getActivity(), android.R.layout.simple_list_item_1, plantsList);
 
         final ImageAdapter imageAdapter = new ImageAdapter(getActivity());
-        gv.setAdapter(imageAdapter);
+       // gv.setAdapter(imageAdapter);
         gv.setAdapter(gridViewArrayAdapter);
         gv.setAdapter(imagesArray);
+
+        final ImageAdapter imageAdapter2 = new ImageAdapter(getActivity());
+        gv.setAdapter(imageAdapter2);
+        imagesArray.notifyDataSetChanged();
+
+        gv.invalidateViews();
+
         btn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                plantsList.add(plantsList.size(),R.drawable.bluebonnet);
+                plantsList.add(plantsList.size(),R.drawable.tulips);
                 plantsTextList.add(plantsTextList.size(), edit.getText().toString());
                 plantsDescTextList.add(plantsDescTextList.size(), "Default Description");
 
@@ -179,8 +186,6 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // Display the selected/clicked item text and position on TextView
-                //  tv.setText(plantsTextList.get(position) + "\n" + plantsDescTextList.get(position));
 
                 String plant = plantsTextList.get(position); // String of the name of the plant
 
